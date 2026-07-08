@@ -1,0 +1,38 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /MediaBox [0 0 595 842] /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 900 >>
+stream
+BT /F1 12 Tf 50 700 Td (IDBI SMART LOAN ORCHESTRATOR AI - BANK TRANS HISTORY AUDIT) Tj ET
+BT /F1 12 Tf 50 676 Td (=========================================================) Tj ET
+BT /F1 12 Tf 50 652 Td (Application Reference ID : APP_1003) Tj ET
+BT /F1 12 Tf 50 628 Td (Account Holder Name      : Amit Patel) Tj ET
+BT /F1 12 Tf 50 604 Td (ICICI Business Current A/C: 881299102) Tj ET
+BT /F1 12 Tf 50 580 Td (Narration Match: ACH_DEBIT_BAJAJ_FIN_PL_EMI_9918 (INR 8,400)) Tj ET
+BT /F1 12 Tf 50 556 Td (Narration Match: ECS_DEBIT_HDFC_AUTO_LN_EMI_0091 (INR 12,500)) Tj ET
+BT /F1 12 Tf 50 532 Td (Total EMI Debits Identified: INR 20,900/mo) Tj ET
+BT /F1 12 Tf 50 508 Td (Balance Trend: DOWN (High volatility)) Tj ET
+BT /F1 12 Tf 50 484 Td (=========================================================) Tj ET
+BT /F1 12 Tf 50 460 Td (Document Metadata: Transaction Log parsing check COMPLETE.) Tj ET
+endstream
+endobj
+xref
+0 5
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000300 00000 n 
+trailer
+<< /Size 5 /Root 1 0 R >>
+startxref
+400
+%%EOF
