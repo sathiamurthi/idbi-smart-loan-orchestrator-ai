@@ -24,16 +24,32 @@ export const ScreenRecorder: React.FC = () => {
     setVideoUrl(null);
     setRecordingTime(0);
 
+    let stream: MediaStream;
     try {
-      // Prompt user to select screen/tab to share (including system audio if checked)
-      const stream = await navigator.mediaDevices.getDisplayMedia({
+      // First try with system/mic audio
+      stream = await navigator.mediaDevices.getDisplayMedia({
         video: true,
         audio: {
           echoCancellation: true,
           noiseSuppression: true
         } as any
       });
+    } catch (audioErr) {
+      console.warn("DisplayMedia with audio failed, retrying video-only...", audioErr);
+      try {
+        // Fallback to video-only if audio capture fails or is denied
+        stream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: false
+        });
+      } catch (videoErr: any) {
+        console.error('Error starting video capture:', videoErr);
+        setError(videoErr.message || 'Permission denied or browser not supported.');
+        return;
+      }
+    }
 
+    try {
       streamRef.current = stream;
 
       // Handle stream stop by browser control bar
@@ -47,22 +63,36 @@ export const ScreenRecorder: React.FC = () => {
       try {
         mediaRecorder = new MediaRecorder(stream, options);
       } catch (e) {
-        // Fallback for browsers that don't support VP9/Opus
         mediaRecorder = new MediaRecorder(stream);
       }
 
       mediaRecorderRef.current = mediaRecorder;
+      const chunks: Blob[] = [];
       
       mediaRecorder.ondataavailable = (event) => {
         if (event.data && event.data.size > 0) {
+          chunks.push(event.data);
           setRecordedChunks((prev) => [...prev, event.data]);
         }
       };
 
       mediaRecorder.onstop = () => {
-        // Stop all tracks to release camera/mic/screen share indicators
         if (streamRef.current) {
           streamRef.current.getTracks().forEach((track) => track.stop());
+        }
+        
+        if (chunks.length > 0) {
+          const blob = new Blob(chunks, { type: 'video/webm' });
+          const url = URL.createObjectURL(blob);
+          setVideoUrl(url);
+
+          // Force auto-download instantly when record finishes
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `islo_ai_demo_walkthrough_${new Date().toISOString().slice(0,10)}.webm`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
         }
       };
 
@@ -75,8 +105,8 @@ export const ScreenRecorder: React.FC = () => {
       }, 1000);
 
     } catch (err: any) {
-      console.error('Error starting screen recording:', err);
-      setError(err.message || 'Permission denied or browser not supported.');
+      console.error('Error in media recorder setup:', err);
+      setError(err.message || 'Error setting up media recorder.');
     }
   };
 
@@ -90,14 +120,6 @@ export const ScreenRecorder: React.FC = () => {
       }
     }
   };
-
-  useEffect(() => {
-    if (recordedChunks.length > 0 && !isRecording) {
-      const blob = new Blob(recordedChunks, { type: 'video/webm' });
-      const url = URL.createObjectURL(blob);
-      setVideoUrl(url);
-    }
-  }, [recordedChunks, isRecording]);
 
   const downloadVideo = () => {
     if (videoUrl) {
