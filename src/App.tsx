@@ -6,6 +6,7 @@ import { CoordinatorPanel } from './components/CoordinatorPanel';
 import { ManagerDashboard } from './components/ManagerDashboard';
 import { DatabaseViewer } from './components/DatabaseViewer';
 import { PitchDeck } from './components/PitchDeck';
+import { ScreenRecorder } from './components/ScreenRecorder';
 import type { LoanApplication, PolicyConfig } from './types';
 import { buildPipeline, runPipelineStep } from './services/orchestrator';
 import { Sparkles } from 'lucide-react';
@@ -177,6 +178,7 @@ function App() {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [speed, setSpeed] = useState<number>(1500); // delay in ms
   const [showVision, setShowVision] = useState<boolean>(true);
+  const [showRecorder, setShowRecorder] = useState<boolean>(false);
 
   // Load initial data from localStorage
   useEffect(() => {
@@ -559,6 +561,29 @@ function App() {
           </span>
         </div>
       </footer>
+
+      {/* Floating Screen Recorder Widget */}
+      <div className="fixed bottom-4 right-4 z-50">
+        {!showRecorder ? (
+          <button
+            onClick={() => setShowRecorder(true)}
+            className="flex items-center space-x-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-red-500 hover:text-red-400 font-bold py-2 px-3.5 rounded-full shadow-lg transition-all"
+          >
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
+            <span className="text-xs font-mono">🎥 Record Walkthrough</span>
+          </button>
+        ) : (
+          <div className="relative">
+            <button
+              onClick={() => setShowRecorder(false)}
+              className="absolute -top-2 -right-2 bg-slate-950 hover:bg-slate-850 border border-slate-800 text-slate-400 hover:text-white rounded-full p-1 leading-none text-[10px] w-5 h-5 flex items-center justify-center font-bold z-50 shadow-md"
+            >
+              ×
+            </button>
+            <ScreenRecorder />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
