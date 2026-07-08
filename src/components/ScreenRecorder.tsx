@@ -3,7 +3,7 @@ import { Video, Square, Download, AlertCircle } from 'lucide-react';
 
 export const ScreenRecorder: React.FC = () => {
   const [isRecording, setIsRecording] = useState<boolean>(false);
-  const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
+
   const [recordingTime, setRecordingTime] = useState<number>(0);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +20,7 @@ export const ScreenRecorder: React.FC = () => {
 
   const startRecording = async () => {
     setError(null);
-    setRecordedChunks([]);
+
     setVideoUrl(null);
     setRecordingTime(0);
 
@@ -72,7 +72,6 @@ export const ScreenRecorder: React.FC = () => {
       mediaRecorder.ondataavailable = (event) => {
         if (event.data && event.data.size > 0) {
           chunks.push(event.data);
-          setRecordedChunks((prev) => [...prev, event.data]);
         }
       };
 
